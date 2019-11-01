@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	  	web.ignoring().antMatchers(HttpMethod.GET,"/registration/**");
 	  }
-	
+//	
 	
 	 @Override
 	 protected void configure(AuthenticationManagerBuilder auth) throws Exception {

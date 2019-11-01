@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -51,7 +52,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Bean
     public JwtAccessTokenConverter jwtTokenEnhancer() {
     	
-    	JwtAccessTokenConverter jwt = new JwtAccessTokenConverter();
+        CustomJwtAccessTokenConverter jwt = new CustomJwtAccessTokenConverter();
     	jwt.setSigningKey("signingKEy");
 		return jwt;
 	}
@@ -66,13 +67,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-    	clients.jdbc(dataSource);
-//    	.inMemory ()
-//        .withClient ("client")
-//                .authorizedGrantTypes ("password", "authorization_code", "refresh_token", "implicit")
-//                .authorities ("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT", "USER")
-//                .scopes ("read", "write")
-//                .secret (passwordEncoder().encode("password"));
+    	clients//.jdbc(dataSource);
+    	.inMemory()
+        .withClient ("client")
+                .authorizedGrantTypes ("password", "authorization_code", "refresh_token", "implicit")
+                .authorities ("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT", "USER")
+                .scopes ("read", "write")
+                .secret (passwordEncoder().encode("password"));
 //    	
 //    	System.out.print(passwordEncoder().encode("password"));
     
@@ -81,8 +82,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
     	TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(new CustomTokenEnhancer(), jwtTokenEnhancer()));
-    	endpoints.tokenStore(tokenStore());
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtTokenEnhancer()));
+    	endpoints.tokenStore(tokenStore()).tokenEnhancer(tokenEnhancer());
         endpoints.authenticationManager(authenticationManager);
         endpoints.tokenEnhancer(tokenEnhancerChain);
         }
@@ -91,5 +92,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public PasswordEncoder passwordEncoder() {
         return new Pbkdf2PasswordEncoder(secret);
     }
-  
+    
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new CustomTokenEnhancer();
+    }
 }
