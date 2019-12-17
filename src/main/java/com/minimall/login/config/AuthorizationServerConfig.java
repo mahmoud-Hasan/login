@@ -40,9 +40,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Autowired
     private DataSource dataSource;
-
-
-	
 	
 	@Bean
     public TokenStore tokenStore() {
@@ -67,15 +64,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-    	clients//.jdbc(dataSource);
-    	.inMemory()
-        .withClient ("client")
-                .authorizedGrantTypes ("password", "authorization_code", "refresh_token", "implicit")
-                .authorities ("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT", "USER")
-                .scopes ("read", "write")
-                .secret (passwordEncoder().encode("password"));
+    	clients.jdbc(dataSource);
+//    	.inMemory()
+//        .withClient ("client")
+//                .authorizedGrantTypes ("password", "authorization_code", "refresh_token", "implicit")
+//                .authorities ("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT", "USER")
+//                .scopes ("read", "write")
+//                .secret (passwordEncoder().encode("password"));
 //    	
-//    	System.out.print(passwordEncoder().encode("password"));
+    	System.out.println(" Password :: " + passwordEncoder().encode("password"));
     
     }
 
