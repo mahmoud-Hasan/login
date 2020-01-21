@@ -41,15 +41,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
     private DataSource dataSource;
 	
+//	@Autowired
+//	private CustomJwtAccessTokenConverter customJwtAccessTokenConverter;
 	@Bean
     public TokenStore tokenStore() {
-        //return new JdbcTokenStore(dataSource);
         return new JwtTokenStore(jwtTokenEnhancer());
     }
 	@Bean
     public JwtAccessTokenConverter jwtTokenEnhancer() {
     	
-        CustomJwtAccessTokenConverter jwt = new CustomJwtAccessTokenConverter();
+        JwtAccessTokenConverter jwt = new JwtAccessTokenConverter();
     	jwt.setSigningKey("signingKEy");
 		return jwt;
 	}
@@ -65,13 +66,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
     	clients.jdbc(dataSource);
-//    	.inMemory()
-//        .withClient ("client")
-//                .authorizedGrantTypes ("password", "authorization_code", "refresh_token", "implicit")
-//                .authorities ("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT", "USER")
-//                .scopes ("read", "write")
-//                .secret (passwordEncoder().encode("password"));
-//    	
+   	
     	System.out.println(" Password :: " + passwordEncoder().encode("password"));
     
     }
@@ -83,6 +78,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     	endpoints.tokenStore(tokenStore()).tokenEnhancer(tokenEnhancer());
         endpoints.authenticationManager(authenticationManager);
         endpoints.tokenEnhancer(tokenEnhancerChain);
+        
         }
     
     @Bean("passwordEncoder")
@@ -94,4 +90,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public TokenEnhancer tokenEnhancer() {
         return new CustomTokenEnhancer();
     }
+//    public CustomJwtAccessTokenConverter customJwtAccessTokenConverter() {
+//    	return new CustomJwtAccessTokenConverter();
+//    }
+    
+    
 }
