@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Configuration
 @EnableAuthorizationServer
 @EnableGlobalMethodSecurity(securedEnabled=true)
+@Order(1)
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     
 	
@@ -41,8 +43,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
     private DataSource dataSource;
 	
-//	@Autowired
-//	private CustomJwtAccessTokenConverter customJwtAccessTokenConverter;
+
 	@Bean
     public TokenStore tokenStore() {
         return new JwtTokenStore(jwtTokenEnhancer());
@@ -90,9 +91,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public TokenEnhancer tokenEnhancer() {
         return new CustomTokenEnhancer();
     }
-//    public CustomJwtAccessTokenConverter customJwtAccessTokenConverter() {
-//    	return new CustomJwtAccessTokenConverter();
-//    }
     
     
 }

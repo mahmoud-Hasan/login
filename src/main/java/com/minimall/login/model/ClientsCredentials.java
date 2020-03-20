@@ -18,12 +18,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "clients_credentials")
+@JsonInclude(Include.NON_NULL)
 public class ClientsCredentials implements UserDetails{
 	
 	private static final long serialVersionUID = 1L;

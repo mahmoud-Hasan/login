@@ -4,6 +4,6 @@ import com.minimall.login.model.ClientsCredentials;
 
 public interface RegistarationService {
 	
-	void createUser(ClientsCredentials clientsCredentials);
+	void createUser(ClientsCredentials clientsCredentials) throws Exception;
 
 }

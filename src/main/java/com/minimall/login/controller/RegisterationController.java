@@ -23,7 +23,7 @@ public class RegisterationController {
 	@Autowired
 	private RegistarationService registarationService;
 	@PostMapping("/create")
-	public void createUser(@RequestBody ClientsCredentials clientsCredentials) {
+	public void createUser(@RequestBody ClientsCredentials clientsCredentials) throws Exception {
 		registarationService.createUser(clientsCredentials);
 
 	}
