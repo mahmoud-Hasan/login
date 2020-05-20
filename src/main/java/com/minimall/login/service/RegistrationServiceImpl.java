@@ -19,18 +19,37 @@ public class RegistrationServiceImpl implements RegistarationService {
 	private ClientsCredintialsRepo clientsCredintialsRepo;
 
 	@Override
-	public void createUser(ClientsCredentials clientsCredentials) throws Exception {
-		
+	public void createAdmin(ClientsCredentials clientsCredentials) throws Exception {
+				
 		if (clientsCredentials.getCompanyName().equals("brand") ) {
 			throw new Exception("Cannot create admin for generic brand ");
 		}
 		String newPass = passwordEncoder.encode(clientsCredentials.getPassword());
 		
 		clientsCredentials.setPassword(newPass);
+		clientsCredentials.setRole("ROLE_ADMIN");
 
 		clientsCredintialsRepo.save(clientsCredentials);
 	}
 	
+//	// create user model
+//	
+//	@Override
+//	public void createUser(ClientsCredentials clientsCredentials) {
+//		
+//		clientsCredentials.setRole("ROLE_USER");
+//		
+//		String newPass = passwordEncoder.encode(clientsCredentials.getPassword());
+//		
+//		clientsCredentials.setPassword(newPass);
+//		clientsCredentials.setRole("ROLE_ADMIN");
+//
+//		clientsCredintialsRepo.save(clientsCredentials);
+//		
+//		// now we need to set profile for the user in user MS
+//		
+//		
+//	}
 	
 
 }

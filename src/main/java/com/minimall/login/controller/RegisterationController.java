@@ -23,11 +23,15 @@ public class RegisterationController {
 	@Autowired
 	private RegistarationService registarationService;
 	@PostMapping("/create")
-	public void createUser(@RequestBody ClientsCredentials clientsCredentials) throws Exception {
-		registarationService.createUser(clientsCredentials);
+	public void createAdmin(@RequestBody ClientsCredentials clientsCredentials) throws Exception {
+		registarationService.createAdmin(clientsCredentials);
 
 	}
-	
+//	@PostMapping("/user")
+//	public void createUser(@RequestBody ClientsCredentials clientsCredentials) {
+//		registarationService.createUser(clientsCredentials);
+//
+//	}
 	@GetMapping("/get/all")
 	public List<ClientsCredentials> getUsers(){
 		return (List<ClientsCredentials>) clientsCredintialsRepo.findAll();
